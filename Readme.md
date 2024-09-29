@@ -11,6 +11,7 @@ This is a prectice for complex backend with node
  dotenv.config({
     path: './env'
  }) -->
+ 
 
 2--database connection in index.js file 
 
@@ -55,8 +56,8 @@ const connectDB = async()=>{
 export default connectDB; -->
 
 
-important middlewares 
-// use cors for use the backend with fronend
+important middlewares  in app.js file
+<!-- // use cors for use the backend with fronend
 app.use(cors({
     origin:process.env.CORS_ORIGIN,
     Credential:true
@@ -69,4 +70,35 @@ app.use(express.urlencoded({extended:true,limit:"16kb"}))
 //middleware for images
 app.use(express.static("public"))
 //use cookiparser for read and delete cookies from browser
-app.use(cookieParser())
+app.use(cookieParser()) -->
+
+
+api error handling class
+<!-- class ApiError extends Error {
+    constructor(
+        statusCode,
+        message = "Something went wrong",
+        errors = [],
+        statck = ""
+    ) {
+        super(message)
+        this.statusCode = statusCode
+        this.data = null
+        this.message=message
+        this.success = false
+        this.errors = errors
+    }
+}
+
+export {ApiError} -->
+
+api response handler
+
+<!-- class ApiResponse {
+    constructor(statusCode,data,message = "Success"){
+        this.statusCode = statusCode
+        this.data = data
+        this.message=message
+        this.success = statusCode < 400
+    }
+} -->
