@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { ApiError } from "./utils/ApiError.js";
 
 const app = express();
 
@@ -27,4 +28,15 @@ import userRoutes from "./routes/user.routes.js"
 //routes declaration
 app.use("/api/v1/users",userRoutes)
 
+
+app.use((err, req, res, next) => {
+    if (err instanceof ApiError) {
+        return res.status(err.statusCode).json({
+            success: err.success,
+            message: err.message,
+            errors: err.errors,
+            data: err.data,
+        })
+    }
+})
 export {app}

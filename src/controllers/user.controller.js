@@ -17,36 +17,40 @@ const registerUser = asyncHandler(async (req, res) => {
     if (existedUser) {
         throw new ApiError(400, "User with email or username is already exist")
     }
-    if (!req.files?.avatar) {
-        throw new ApiError(400, "Avatar is required")
+    if (!req.files?.avatar) {  
+        throw new ApiError(400, "Avatar is required")      
+    }
+    let coverImageUrl = null;
+    if (req.files.coverImage) {   
+       const  coverImageLocalpath = req.files.coverImage[0].path     
+        const coverImage = await uploadCloudinary(coverImageLocalpath)
+        coverImageUrl = coverImage.url
     }
     const avatarLocalpath = req.files?.avatar[0]?.path
-    const coverImageLocalpath = req.files?.coverImage[0]?.path
-
     const avatar = await uploadCloudinary(avatarLocalpath)
-    const coverImage = await uploadCloudinary(coverImageLocalpath)
+
 
     if (!avatar) {
-        throw new ApiError(400, "Avatar is required")
+        throw new ApiError(400, "Avatar is required")      
     }
     const user = await User.create({
-        username:username.toLowerCase(),
+        username: username.toLowerCase(),
         email,
         avatar: avatar.url,
-        coverImage: coverImage.url,
+        coverImage: coverImageUrl,
         fullname,
         password
 
     })
-    
-const createdUser = await User.findById(user._id).select("-password -refreshTokken")
-if(createdUser){
-    res.status(200).json(
-        new ApiResponse(200,createdUser,"User registerd successfully")
-    )
-}
 
- 
+    const createdUser = await User.findById(user._id).select("-password -refreshTokken")
+    if (createdUser) {
+        res.status(200).json(
+            new ApiResponse(200, createdUser, "User registerd successfully")
+        )
+    }
+
+
 })
 
 export { registerUser }
