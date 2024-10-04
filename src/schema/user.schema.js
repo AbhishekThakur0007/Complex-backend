@@ -8,7 +8,15 @@ import Joi from "joi";
     password:Joi.string().min(8).required()
    })
 } 
+
+const userLoginSchema = {
+    body:Joi.object({
+        username:Joi.string().min(3),
+        email:Joi.string().email(),
+        password:Joi.string().min(8).required()
+    }).xor('username','email').messages({"message" : "Please provide either username or email"})
+}
  
-const userSchema = {userRegistrationSchema}
+const userSchema = {userRegistrationSchema,userLoginSchema}
 
 export default userSchema
