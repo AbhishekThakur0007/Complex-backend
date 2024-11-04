@@ -133,7 +133,15 @@ const userLogout = asyncHandler(async (req, res, next) => {
 
 
 const getUser = asyncHandler(async (req, res, next) => {
-    console.log("--------", req.user)
+    const users = await User.find();
+    if(!users){
+        throw new ApiError(400,"Something went wrong while fetching users")
+    }
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200,users,"Successfully fetching all users")
+    )
 })
 
 export { registerUser, loginUser, getUser, userLogout }

@@ -5,7 +5,8 @@ import Joi from "joi";
     username:Joi.string().min(3).required(),
     fullname:Joi.string().min(3).required(),
     email:Joi.string().email().required(),
-    password:Joi.string().min(8).required()
+    password:Joi.string().min(8).required(),
+    avatra:Joi.string()
    })
 } 
 

@@ -7,10 +7,7 @@ const app = express();
 
 
 // use cors for use the backend with fronend
-app.use(cors({
-    origin:process.env.CORS_ORIGIN,
-    Credential:true
-}))
+app.use(cors())
 
 //middleware for accept the json 
 app.use(express.json({limit:"6kb"}))
@@ -24,9 +21,11 @@ app.use(cookieParser())
 
 //routes import 
 import userRoutes from "./routes/user.routes.js"
+import subscriptionRoutes from "./routes/subscription.routes.js"
 
 //routes declaration
 app.use("/api/v1/users",userRoutes)
+app.use("/api/v1/subscription",subscriptionRoutes)
 
 
 app.use((err, req, res, next) => {
